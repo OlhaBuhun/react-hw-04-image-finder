@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Component } from 'react';
+import { useState } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { HiDocumentMagnifyingGlass } from 'react-icons/hi2';
@@ -10,47 +10,43 @@ import {
   SearchbarHeader,
 } from './Searchbar.styled';
 
-class Searchbar extends Component {
-  state = {
-    searchQueru: '',
+const Searchbar = ({ onSubmit }) => {
+  const [searchQueru, setSearchQueru] = useState('');
+
+  const handleNameChange = event => {
+    setSearchQueru(event.currentTarget.value.toLowerCase());
   };
 
-  handleNameChange = event => {
-    this.setState({ searchQueru: event.currentTarget.value.toLowerCase() });
-  };
-
-  handleSubmit = event => {
+  const handleSubmit = event => {
     event.preventDefault();
 
-    if (this.state.searchQueru.trim() === '') {
+    if (searchQueru.trim() === '') {
       toast.error('Щось напиши');
       return;
     }
 
-    this.props.onSubmit(this.state.searchQueru);
-    this.setState({ searchQueru: '' });
+    onSubmit(searchQueru);
+    setSearchQueru('');
   };
 
-  render() {
-    return (
-      <SearchbarHeader>
-        <SearchForm onSubmit={this.handleSubmit}>
-          <SearchFormInput
-            type="text"
-            placeholder="Search images and photos"
-            name="searchQueru"
-            value={this.state.searchQueru}
-            onChange={this.handleNameChange}
-          />
-          <SearchFormButton type="submit">
-            <span>
-              <HiDocumentMagnifyingGlass size="40" />
-            </span>
-          </SearchFormButton>
-        </SearchForm>
-      </SearchbarHeader>
-    );
-  }
-}
+  return (
+    <SearchbarHeader>
+      <SearchForm onSubmit={handleSubmit}>
+        <SearchFormInput
+          type="text"
+          placeholder="Search images and photos"
+          name="searchQueru"
+          value={searchQueru}
+          onChange={handleNameChange}
+        />
+        <SearchFormButton type="submit">
+          <span>
+            <HiDocumentMagnifyingGlass size="40" />
+          </span>
+        </SearchFormButton>
+      </SearchForm>
+    </SearchbarHeader>
+  );
+};
 
 export default Searchbar;

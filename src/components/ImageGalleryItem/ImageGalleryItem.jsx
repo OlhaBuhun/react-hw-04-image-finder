@@ -1,45 +1,26 @@
 /* eslint-disable react/prop-types */
-import { Component } from 'react';
+import { useState } from 'react';
 import { ModalWindow } from 'components/Modal/ModalWindow';
 import { GaleryItem, GaleryItemImage } from './ImageGalleryItem.styled';
 
-class ImageGalleryItem extends Component {
-  state = {
-    isModalOpen: false,
-  };
+const ImageGalleryItem = ({ webformatURL, largeImageURL, tags }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  openModal = () => {
-    this.setState({
-      isModalOpen: true,
-    });
-  };
+  const openModal = () => setIsModalOpen(true);
 
-  closeModal = () => {
-    this.setState({
-      isModalOpen: false,
-    });
-  };
+  const closeModal = () => setIsModalOpen(false);
 
-  render() {
-    const { isModalOpen } = this.state;
-    const { webformatURL, largeImageURL, tags } = this.props;
-
-    return (
-      <GaleryItem>
-        <GaleryItemImage
-          src={webformatURL}
-          alt={tags}
-          onClick={this.openModal}
-        />
-        <ModalWindow
-          onCloseModal={this.closeModal}
-          largeImageURL={largeImageURL}
-          alt={tags}
-          isModalOpen={isModalOpen}
-        />
-      </GaleryItem>
-    );
-  }
-}
+  return (
+    <GaleryItem>
+      <GaleryItemImage src={webformatURL} alt={tags} onClick={openModal} />
+      <ModalWindow
+        onCloseModal={closeModal}
+        largeImageURL={largeImageURL}
+        alt={tags}
+        isModalOpen={isModalOpen}
+      />
+    </GaleryItem>
+  );
+};
 
 export default ImageGalleryItem;
